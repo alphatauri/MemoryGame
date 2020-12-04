@@ -15,14 +15,35 @@ using System.Windows.Shapes;
 
 namespace MemoryGame
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            SetupGame();
+        }
+
+        void SetupGame()
+        {
+            List<string> animalEmoji = new List<string>
+            {
+                "🐶","🐶",
+                "🐱","🐱",
+                "🐰","🐰",
+                "🐔","🐔",
+                "🦄","🦄",
+                "🐼","🐼",
+                "🐩","🐩",
+                "🦍","🦍"
+            };
+
+            var rnd = new Random();
+            foreach (var t in mainGrid.Children.OfType<TextBlock>())
+            {
+                var i = rnd.Next(animalEmoji.Count);
+                t.Text = animalEmoji[i];
+                animalEmoji.RemoveAt(i);
+            }
         }
     }
 }
