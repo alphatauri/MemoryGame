@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace MemoryGame
 {
@@ -20,6 +13,13 @@ namespace MemoryGame
         public MainWindow()
         {
             InitializeComponent();
+
+            timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(100)
+            };
+            timer.Tick += Timer_Tick;
+
             SetupGame();
         }
 
@@ -40,14 +40,24 @@ namespace MemoryGame
             var rnd = new Random();
             foreach (var t in mainGrid.Children.OfType<TextBlock>())
             {
-                var i = rnd.Next(animalEmoji.Count);
-                t.Text = animalEmoji[i];
-                animalEmoji.RemoveAt(i);
+                if (t.Name != "timeDisplay")
+                {
+                    t.Visibility = Visibility.Visible;
+                    var i = rnd.Next(animalEmoji.Count);
+                    t.Text = animalEmoji[i];
+                    animalEmoji.RemoveAt(i);
+                }
             }
+
+            timer.Start();
+            tenthOfSecondsElapsed = 0;
+            matchesFound = 0;
         }
 
         bool firstSelection;
         TextBlock previousSelection;
+        DispatcherTimer timer;
+
         void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var currentSelection = (TextBlock)sender;
@@ -59,6 +69,7 @@ namespace MemoryGame
             }
             else if (currentSelection.Text == previousSelection.Text)
             {
+                matchesFound++;
                 currentSelection.Visibility = Visibility.Hidden;
                 firstSelection = false;
             }
@@ -67,6 +78,22 @@ namespace MemoryGame
                 previousSelection.Visibility = Visibility.Visible;
                 firstSelection = false;
             }
+
+            if (matchesFound == 8)
+                timer.Stop();
+        }
+
+        int matchesFound = 0;
+        int tenthOfSecondsElapsed = 0;
+        void TimeDisplay_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (matchesFound == 8)
+                SetupGame();
+        }
+        void Timer_Tick(object sender, EventArgs e)
+        {
+            tenthOfSecondsElapsed++;
+            timeDisplay.Text = (tenthOfSecondsElapsed / 10f).ToString("0.0s");
         }
     }
 }

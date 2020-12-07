@@ -39,5 +39,7 @@
         <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TextBlock_MouseDown"/>
         <TextBlock Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TextBlock_MouseDown"/>
         <TextBlock Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TextBlock_MouseDown"/>
+        
+        <TextBlock Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" Text="0.0s" VerticalAlignment="Center" Grid.ColumnSpan="2" FontSize="40" Name="timeDisplay" MouseDown="TimeDisplay_MouseDown"/>
     </Grid>
 </Window>
