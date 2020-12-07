@@ -45,5 +45,28 @@ namespace MemoryGame
                 animalEmoji.RemoveAt(i);
             }
         }
+
+        bool firstSelection;
+        TextBlock previousSelection;
+        void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var currentSelection = (TextBlock)sender;
+            if (!firstSelection)
+            {
+                currentSelection.Visibility = Visibility.Hidden;
+                previousSelection = currentSelection;
+                firstSelection = true;
+            }
+            else if (currentSelection.Text == previousSelection.Text)
+            {
+                currentSelection.Visibility = Visibility.Hidden;
+                firstSelection = false;
+            }
+            else
+            {
+                previousSelection.Visibility = Visibility.Visible;
+                firstSelection = false;
+            }
+        }
     }
 }
